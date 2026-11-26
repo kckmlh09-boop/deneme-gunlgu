@@ -1,0 +1,78 @@
+name: Build Yanlis Defterim APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Install npm dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate source files
+        run: npm run validate
+
+      - name: Build web assets
+        run: npm run build
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Add camera permission
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          manifest = Path('android/app/src/main/AndroidManifest.xml')
+          text = manifest.read_text(encoding='utf-8')
+          permission = '    <uses-permission android:name="android.permission.CAMERA" />\n'
+          if 'android.permission.CAMERA' not in text:
+              text = text.replace('<application', permission + '    <application', 1)
+          manifest.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Sync Capacitor plugins and assets
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deneme-gunlugu-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
