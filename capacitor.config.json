@@ -1,0 +1,9 @@
+{
+  "appId": "com.yanlisdefterim.app",
+  "appName": "Deneme Günlüğü",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost"
+  }
+}

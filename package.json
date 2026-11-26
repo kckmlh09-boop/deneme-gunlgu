@@ -1,0 +1,19 @@
+{
+  "name": "deneme-gunlugu",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.4.3",
+    "@capacitor/core": "7.4.3",
+    "@capacitor-community/camera-preview": "7.0.5"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.4.3",
+    "vite": "6.4.1"
+  }
+}
