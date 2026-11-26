@@ -1,1 +1,17 @@
-
+{
+  "id": "./",
+  "name": "Deneme Günlüğü",
+  "short_name": "Deneme Günlüğü",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "tr",
+  "description": "TYT ve AYT denemelerini, yanlış sorularını ve gelişimini takip et.",
+  "icons": [
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
